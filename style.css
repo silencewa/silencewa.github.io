@@ -98,3 +98,110 @@ body {
     from { top: -100px; opacity: 1; }
     to { top: 100vh; opacity: 0; }
 }
+
+/* 贴纸雨动画 */
+.sticker-rain {
+    position: absolute;
+    top: -50px;
+    pointer-events: none;
+    z-index: 1000;
+    animation: falling 3s linear forwards;
+}
+
+@keyframes falling {
+    from { 
+        top: -50px; 
+        opacity: 1; 
+        transform: rotate(0deg);
+    }
+    to { 
+        top: 100vh; 
+        opacity: 0.7; 
+        transform: rotate(360deg);
+    }
+}
+
+/* 随机语录气泡 */
+.quote-bubble {
+    position: absolute;
+    padding: 12px 20px;
+    background: #fff;
+    border: 3px solid #ff69b4;
+    border-radius: 20px;
+    font-size: 16px;
+    color: #ff1493;
+    max-width: 200px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 1000;
+    animation: fadeIn 0.5s, float 3s ease-in-out forwards;
+}
+
+.quote-bubble:after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 10px 10px 0;
+    border-style: solid;
+    border-color: #ff69b4 transparent transparent;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes float {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-100px); opacity: 0; }
+}
+
+/* 照片放大查看效果 */
+.lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.lightbox.active {
+    display: flex;
+    animation: fadeIn 0.3s;
+}
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+    border: 5px dashed #ff69b4;
+    padding: 5px;
+    background: white;
+    animation: zoomIn 0.3s;
+}
+
+.close-lightbox {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+    transform: rotate(45deg);
+    transition: transform 0.3s;
+}
+
+.close-lightbox:hover {
+    transform: rotate(135deg);
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.5); }
+    to { transform: scale(1); }
+}

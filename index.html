@@ -12,15 +12,22 @@
     <div class="gallery">
         <!-- 第一张照片及对话泡泡 -->
         <div class="photo-box" id="photo1">
-            <img src="type c.jpg" alt="Type C照片">
+            <img src="type c.jpg" alt="Type C照片" class="zoomable">
             <div class="speech-bubble">type c 😂</div>
         </div>
         <!-- 第二张照片及心形装饰 -->
         <div class="photo-box" id="photo2">
-            <img src="嘟嘟.jpg" alt="嘟嘟照片">
+            <img src="嘟嘟.jpg" alt="嘟嘟照片" class="zoomable">
             <div class="heart">❤</div>
         </div>
     </div>
+    
+    <!-- 放大查看照片的lightbox容器 -->
+    <div id="lightbox" class="lightbox">
+        <span class="close-lightbox">+</span>
+        <img id="lightbox-img" src="" alt="放大照片">
+    </div>
+    
     <!-- 引入脚本 -->
     <script src="script.js"></script>
 </body>
