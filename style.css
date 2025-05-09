@@ -1,0 +1,100 @@
+/* 全局样式 */
+body {
+    margin: 0;
+    padding: 0;
+    /* 梦幻渐变背景 */
+    background: linear-gradient(to right, #ffe6f5, #e0ffff);
+    font-family: 'Bangers', cursive;
+    text-align: center;
+}
+/* 容器使图片居中显示 */
+.gallery {
+    padding-top: 40px;
+}
+/* 照片盒子 样式 */
+.photo-box {
+    display: inline-block;
+    margin: 20px;
+    padding: 10px;
+    border: 5px dashed #ff69b4; /* 粉色虚线边框 */
+    border-radius: 20px;
+    background: #fffaf0; /* 淡粉背景 */
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    position: relative;
+    transition: transform 0.3s;
+}
+/* 鼠标悬停时放大并旋转 */
+.photo-box:hover {
+    transform: scale(1.05) rotate(-2deg);
+}
+/* 照片图片样式，并添加弹跳动画 */
+.photo-box img {
+    display: block;
+    max-width: 300px;
+    border-radius: 10px;
+    animation: bounce 3s infinite;
+}
+/* 对话泡泡文字 */
+.speech-bubble {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 10px;
+    background: #ffffff;
+    border: 2px dashed #ff69b4;
+    border-radius: 10px;
+    font-size: 18px;
+    color: #ff1493;
+    white-space: nowrap;
+    /* 抖动动画 */
+    animation: shake 1.5s infinite;
+}
+/* 心形图标样式 */
+.heart {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 50px;
+    color: #ff69b4;
+    /* 漂浮动画 */
+    animation: bounce 2s infinite;
+}
+/* 伪元素：星星效果 */
+.photo-box::after {
+    content: "🌟";
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    font-size: 30px;
+    animation: blink 2s infinite;
+}
+/* CSS动画：弹跳 */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+/* CSS动画：抖动 */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
+/* CSS动画：闪烁 */
+@keyframes blink {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+/* 贴纸样式：下落动画 */
+.sticker {
+    position: absolute;
+    top: -100px;
+    pointer-events: none;
+    width: 50px;
+    animation: fall 3s ease-in forwards;
+}
+@keyframes fall {
+    from { top: -100px; opacity: 1; }
+    to { top: 100vh; opacity: 0; }
+}
