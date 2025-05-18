@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>想被戳屁股吗?</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font: inherit;
+        }
+
+        html {
+            color: #333;
+            font-size: 62.5%;
+        }
+
+        @media screen and (max-width: 480px) {
+            html {
+                font-size: 50%;
+            }
+        }
+
+        body {
+            font-size: 2rem;
+            padding: 0;
+            margin: 0;
+            width: 100vw;
+            height: 100vh;
+            font-family: 'Rubik', 'Noto Sans SC', sans-serif;
+        }
+
+        .confirm,
+        .accepted,
+        .rejected {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 72rem;
+            max-width: 100%;
+            min-width: 34rem;
+            max-height: 100%;
+            height: 46rem;
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .confirm-body,
+        .accepted-body,
+        .rejected-body {
+            flex: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            position: relative;
+            margin: 2rem 4rem;
+        }
+
+        .confirm-body-title,
+        .accepted-body-title,
+        .rejected-body-title {
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            transform: translateY(-50%);
+            top: 5%;
+            text-align: center;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .confirm-body-subtitle,
+        .accepted-body-subtitle,
+        .rejected-body-subtitle {
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            transform: translateY(-50%);
+            top: 15%;
+            text-align: center;
+            width: 100%;
+            font-size: 1.5rem;
+        }
+
+        .confirm-body-button,
+        .confirm-body-button:link,
+        .confirm-body-button:visited,
+        .accepted-body-button,
+        .rejected-body-button {
+            color: #fff;
+            border-radius: 1rem;
+            text-decoration: none;
+            padding: 1.2rem 2.5rem;
+            margin-bottom: 1rem;
+            min-width: 12rem;
+            text-align: center;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+        .confirm-body-button:hover {
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transform: translateY(-2px);
+        }
+        .confirm-body-button:active {
+            transform: translateY(0px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .confirm-body-button-delete {
+            background-color: #e74c3c;
+        }
+
+        .confirm-body-button-delete:hover {
+            background-color: #c0392b;
+        }
+
+        .confirm-body-button-cancel {
+            background-color: #2ecc71;
+        }
+
+        .confirm-body-button-cancel:hover {
+            background-color: #27ae60;
+        }
+
+        .accepted-body-button,
+        .rejected-body-button {
+            background-color: #3498db;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .accepted-body-button:hover,
+        .rejected-body-button:hover {
+            background-color: #2980b9;
+        }
+
+        .butt {
+            --happiness: 0.9;
+            --flush: 0;
+            --px: 0.5;
+            --py: 0.5;
+            width: 22rem;
+            max-width: 100%;
+            height: 22rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle at 50% 35%, #ffe6d5 10%, #f5d7b8 50%, #e0b38c 90%);
+            border-radius: 40% 40% 60% 60% / 45% 45% 65% 65%;
+            overflow: hidden;
+            margin: 0;
+            align-self: center;
+            flex: 0 0 auto;
+            border: solid 1px #d9b38c;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), inset 0 -20px 40px rgba(0, 0, 0, 0.15), inset 0 15px 30px rgba(255, 255, 255, 0.25);
+        }
+
+        .butt,
+        .butt * {
+            position: absolute;
+        }
+
+        .butt::before { /* Flush effect */
+            content: '';
+            display: block;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 100, 100, 0.6), rgba(255, 100, 100, 0));
+            opacity: var(--flush);
+            transition: opacity 0.3s;
+        }
+
+        .butt::after { /* Central crease */
+            content: '';
+            display: block;
+            width: 3%;
+            height: 80%;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.25));
+            border-radius: 3px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .butt-cheek {
+            width: 48%;
+            height: 70%;
+            background: radial-gradient(circle at 40% 30%, rgba(255, 245, 235, 0.4), rgba(230, 200, 170, 0.2));
+            bottom: 5%;
+            border-radius: 50% 50% 60% 60%;
+            box-shadow: inset -5px -5px 15px rgba(0, 0, 0, 0.15), inset 5px 5px 15px rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .butt-cheek-left {
+            left: 2%;
+            transform: translateX(calc((1 - var(--happiness)) * 5px));
+        }
+
+        .butt-cheek-right {
+            right: 2%;
+            transform: translateX(calc((var(--happiness) - 1) * 5px));
+        }
+
+        .butt-shadow {
+            width: 95%;
+            height: 35%;
+            background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.25), transparent);
+            bottom: 0;
+            left: 2.5%;
+            border-radius: 50%;
+            opacity: calc(0.6 + var(--happiness) * 0.3);
+            transition: opacity 0.3s;
+        }
+
+        .butt-highlight {
+            width: 70%;
+            height: 25%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.5), transparent);
+            top: 5%;
+            left: 15%;
+            border-radius: 50%;
+            opacity: calc(0.7 * var(--happiness));
+            transition: opacity 0.3s;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- 初始界面 -->
+    <section class="confirm">
+        <div class="confirm-body">
+            <h2 class="confirm-body-title">想被戳屁股吗?</h2>
+            <h3 class="confirm-body-subtitle">小臀它...它好像很期待... 你怎么选?</h3>
+            <figure class="butt" style="--happiness:0.9; --flush:0; --px:0.5; --py:0.5;">
+                <div class="butt-cheek butt-cheek-left"></div>
+                <div class="butt-cheek butt-cheek-right"></div>
+                <div class="butt-shadow"></div>
+                <div class="butt-highlight"></div>
+            </figure>
+            <a class="confirm-body-button confirm-body-button-cancel" href="javascript:void(0)">求求你戳我</a>
+            <a class="confirm-body-button confirm-body-button-delete" href="javascript:void(0)">不想</a>
+        </div>
+    </section>
+
+    <!-- 接受后的新界面 -->
+    <section class="accepted hidden">
+        <div class="accepted-body">
+            <h2 class="accepted-body-title">好棒！</h2>
+            <h3 class="accepted-body-subtitle">屁屁舒服了呢！</h3>
+            <figure class="butt" style="--happiness:1; --flush:0.7; --px:0.5; --py:0.5;">
+                <div class="butt-cheek butt-cheek-left"></div>
+                <div class="butt-cheek butt-cheek-right"></div>
+                <div class="butt-shadow"></div>
+                <div class="butt-highlight"></div>
+            </figure>
+            <a class="accepted-body-button" href="javascript:void(0)">再来一次?</a>
+        </div>
+    </section>
+
+    <!-- 拒绝后的新界面 -->
+    <section class="rejected hidden">
+        <div class="rejected-body">
+            <h2 class="rejected-body-title">呜...有点失落...</h2>
+            <h3 class="rejected-body-subtitle">小臀尊重你的决定，下次...下次可以吗？</h3>
+            <figure class="butt" style="--happiness:0.2; --flush:0; --px:0.5; --py:0.5;">
+                <div class="butt-cheek butt-cheek-left"></div>
+                <div class="butt-cheek butt-cheek-right"></div>
+                <div class="butt-shadow"></div>
+                <div class="butt-highlight"></div>
+            </figure>
+            <a class="rejected-body-button" href="javascript:void(0)">返回</a>
+        </div>
+    </section>
+
+    <script>
+        const confirmSection = document.querySelector('.confirm');
+        const acceptedSection = document.querySelector('.accepted');
+        const rejectedSection = document.querySelector('.rejected');
+        
+        const buttConfirm = confirmSection.querySelector('.butt');
+        const buttAccepted = acceptedSection.querySelector('.butt');
+        const buttRejected = rejectedSection.querySelector('.butt');
+
+        const btnPleasePoke = document.querySelector('.confirm-body-button-cancel'); // "求求你戳我"
+        const btnDontWant = document.querySelector('.confirm-body-button-delete'); // "不想"
+
+        const confirmTitle = confirmSection.querySelector('.confirm-body-title');
+        const confirmSubtitle = confirmSection.querySelector('.confirm-body-subtitle');
+
+        const initialButtState = {
+            happiness: 0.9,
+            flush: 0,
+            px: 0.5,
+            py: 0.5
+        };
+        const initialText = {
+            title: '想被戳屁屁吗?',
+            subtitle: '屁屁它...它好像很期待... '
+        };
+        const hoverText = {
+            title: '屁股很想呢',
+            subtitle: '小臀好渴望被戳，你真的要拒绝吗？'
+        };
+        const current = { ...initialButtState };
+        const target = { ...initialButtState };
+        let rejectCount = 0;
+        const MAX_REJECT_CLICKS_BEFORE_MOVE = 3;
+
+        confirmSection.addEventListener('mousemove', onMouseMove);
+        confirmSection.addEventListener('mouseleave', onMouseLeave);
+
+        // Hover effects for "不想" button
+        btnDontWant.addEventListener('mouseenter', () => {
+            confirmTitle.textContent = hoverText.title;
+            confirmSubtitle.textContent = hoverText.subtitle;
+            target.happiness = 0.7; // Slightly less happy when hovering "不想"
+            target.flush = 0.1; // Slight flush to show desire
+        });
+
+        btnDontWant.addEventListener('mouseleave', () => {
+            confirmTitle.textContent = initialText.title;
+            confirmSubtitle.textContent = initialText.subtitle;
+            target.happiness = Math.max(0.1, initialButtState.happiness - rejectCount * 0.1);
+            target.flush = 0;
+        });
+
+        btnPleasePoke.addEventListener('click', () => {
+            confirmSection.classList.add('hidden');
+            acceptedSection.classList.remove('hidden');
+            setButtState(buttAccepted, { happiness: 1, flush: 0.7, px: 0.5, py: 0.5 });
+        });
+
+        btnDontWant.addEventListener('click', () => {
+            rejectCount++;
+            target.happiness = Math.max(0.1, initialButtState.happiness - rejectCount * 0.2);
+            target.flush = 0;
+
+            // Make "求求你戳我" button more appealing
+            btnPleasePoke.style.transform = `scale(${1 + rejectCount * 0.25})`;
+            btnPleasePoke.style.boxShadow = `0px 0px 20px rgba(46, 204, 113, ${0.5 + rejectCount * 0.1})`;
+
+            if (rejectCount >= MAX_REJECT_CLICKS_BEFORE_MOVE) {
+                btnDontWant.style.position = 'absolute';
+                const parentRect = btnDontWant.parentElement.getBoundingClientRect();
+                const btnRect = btnDontWant.getBoundingClientRect();
+                
+                let newLeft = Math.random() * (parentRect.width - btnRect.width);
+                let newTop = Math.random() * (parentRect.height - btnRect.height - 50);
+
+                const pleasePokeRect = btnPleasePoke.getBoundingClientRect();
+                const pleasePokeCenterX = pleasePokeRect.left + pleasePokeRect.width / 2 - parentRect.left;
+                const pleasePokeCenterY = pleasePokeRect.top + pleasePokeRect.height / 2 - parentRect.top;
+
+                if (Math.abs(newLeft + btnRect.width / 2 - pleasePokeCenterX) < 150 &&
+                    Math.abs(newTop + btnRect.height / 2 - pleasePokeCenterY) < 100) {
+                    newLeft = (newLeft + parentRect.width / 2) % (parentRect.width - btnRect.width);
+                    newTop = (newTop + parentRect.height / 2) % (parentRect.height - btnRect.height - 50);
+                }
+
+                btnDontWant.style.left = `${newLeft}px`;
+                btnDontWant.style.top = `calc(80% - ${Math.random() * 50}px)`;
+            }
+
+            // Show rejected section only after many rejections (optional)
+            if (rejectCount >= 7) {
+                confirmSection.classList.add('hidden');
+                rejectedSection.classList.remove('hidden');
+                setButtState(buttRejected, { happiness: 0.2, flush: 0, px: 0.5, py: 0.5 });
+            }
+        });
+
+        acceptedSection.querySelector('a').addEventListener('click', () => {
+            acceptedSection.classList.add('hidden');
+            confirmSection.classList.remove('hidden');
+            resetToInitialState();
+        });
+
+        rejectedSection.querySelector('a').addEventListener('click', () => {
+            rejectedSection.classList.add('hidden');
+            confirmSection.classList.remove('hidden');
+            resetToInitialState();
+        });
+
+        function onMouseMove({ clientX: x, clientY: y }) {
+            if (confirmSection.classList.contains('hidden')) return;
+
+            const confirmRect = confirmSection.getBoundingClientRect();
+            let dxDontWant = x - (btnDontWant.getBoundingClientRect().left + btnDontWant.getBoundingClientRect().width * 0.5);
+            let dyDontWant = y - (btnDontWant.getBoundingClientRect().top + btnDontWant.getBoundingClientRect().height * 0.5);
+            let dxPleasePoke = x - (btnPleasePoke.getBoundingClientRect().left + btnPleasePoke.getBoundingClientRect().width * 0.5);
+            let dyPleasePoke = y - (btnPleasePoke.getBoundingClientRect().top + btnPleasePoke.getBoundingClientRect().height * 0.5);
+            
+            let px = (x - confirmRect.left) / confirmRect.width;
+            let py = (y - confirmRect.top) / confirmRect.height;
+
+            let distDontWant = Math.sqrt(dxDontWant * dxDontWant + dyDontWant * dyDontWant);
+            let distPleasePoke = Math.sqrt(dxPleasePoke * dxPleasePoke + dyPleasePoke * dyPleasePoke);
+
+            let happinessRatio = distDontWant / (distPleasePoke + distDontWant + 1);
+            target.happiness = Math.max(0.1, Math.min(1, 0.2 + Math.pow(happinessRatio, 0.75) * 0.8));
+            target.flush = Math.min(0.3, happinessRatio * 0.3);
+
+            target.px = Math.max(0, Math.min(1, px));
+            target.py = Math.max(0, Math.min(1, py));
+        }
+
+        function onMouseLeave() {
+            if (confirmSection.classList.contains('hidden')) return;
+            target.happiness = Math.max(0.1, initialButtState.happiness - rejectCount * 0.1);
+            target.flush = 0;
+            target.px = initialButtState.px;
+            target.py = initialButtState.py;
+        }
+        
+        function setButtState(buttElement, state) {
+            for (const prop in state) {
+                buttElement.style.setProperty(`--${prop}`, state[prop]);
+            }
+        }
+
+        function updateButtAnimation() {
+            let needsUpdate = false;
+            for (let prop in target) {
+                if (Math.abs(target[prop] - current[prop]) < 0.01) {
+                    current[prop] = target[prop];
+                } else {
+                    current[prop] += (target[prop] - current[prop]) * 0.1;
+                    needsUpdate = true;
+                }
+                buttConfirm.style.setProperty(`--${prop}`, current[prop]);
+            }
+            requestAnimationFrame(updateButtAnimation);
+        }
+
+        function resetToInitialState() {
+            target.happiness = initialButtState.happiness;
+            target.flush = initialButtState.flush;
+            target.px = initialButtState.px;
+            target.py = initialButtState.py;
+            
+            current.happiness = initialButtState.happiness;
+            current.flush = initialButtState.flush;
+            current.px = initialButtState.px;
+            current.py = initialButtState.py;
+            setButtState(buttConfirm, current);
+
+            confirmTitle.textContent = initialText.title;
+            confirmSubtitle.textContent = initialText.subtitle;
+
+            rejectCount = 0;
+            btnPleasePoke.style.transform = 'scale(1)';
+            btnPleasePoke.style.boxShadow = '0 2px 5px rgba(0,0,0,0.15)';
+            
+            btnDontWant.style.position = 'static';
+            btnDontWant.style.left = 'auto';
+            btnDontWant.style.top = 'auto';
+        }
+
+        setButtState(buttAccepted, { happiness: 1, flush: 0.7, px: 0.5, py: 0.5 });
+        setButtState(buttRejected, { happiness: 0.2, flush: 0, px: 0.5, py: 0.5 });
+        
+        resetToInitialState();
+        updateButtAnimation();
+    </script>
+</body>
+</html>
